@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import ImageCard from "../Gallery/ImageCard/ImageCard";
+import { useContext } from "react";
+import { globalContext } from "../../context/GlobalContext";
 
 const StyledOverlay = styled.div`
   position: fixed;
@@ -8,28 +10,28 @@ const StyledOverlay = styled.div`
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.7);
-`
+`;
 
 const StyledDialog = styled.dialog`
   background: transparent;
   border: 0;
-  padding:0;
+  padding: 0;
   position: absolute;
-  top:10px;
+  top: 10px;
   width: 1156px;
   display: flex;
-  justify-content:center;
+  justify-content: center;
 
-  @media (max-width:480px) {
-      width: 384px;
-      height: 312px;
+  @media (max-width: 480px) {
+    width: 384px;
+    height: 312px;
 
-      footer{
-        max-height:80px;
-        padding:0 12px 0 18px;
-        font-size:14px;
-      }
+    footer {
+      max-height: 80px;
+      padding: 0 12px 0 18px;
+      font-size: 14px;
     }
+  }
   button {
     background: none;
     border: none;
@@ -40,24 +42,35 @@ const StyledDialog = styled.dialog`
     }
   }
   form {
-        button {
-            position: relative;
-            top: 20px;
-            right: 60px;
-        }
+    button {
+      position: relative;
+      top: 20px;
+      right: 60px;
     }
-`
-    
-export default function ModalZoom({ photo, onClose, toSelectFavourite }) {
+  }
+`;
+
+export default function ModalZoom() {
+  const context = useContext(globalContext);
+  //  Debugger
+  //  console.log(context);
+  
+  const { selectedPhoto, setSelectedPhoto, toSelectFavourite } = context;
+  const photo = selectedPhoto;
   return (
     <>
       {photo && (
         <StyledOverlay>
-          <StyledDialog open={!!photo} onClose={onClose}>
-            <ImageCard photo={photo} isExpanded={true} className="imageCard" toSelectFavourite = {toSelectFavourite} />
+          <StyledDialog open={!!photo} onClose={()=>setSelectedPhoto(null)}>
+            <ImageCard
+              photo={photo}
+              isExpanded={true}
+              className="imageCard"
+              toSelectFavourite={()=>toSelectFavourite(photo)}
+            />
 
             <form method="dialog" className="closeButton">
-              <button >
+              <button>
                 <img src="/img/icons/close.svg" alt="Icono de cerrar" />
               </button>
             </form>

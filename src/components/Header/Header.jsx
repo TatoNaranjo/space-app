@@ -1,5 +1,7 @@
-import { useState } from "react"
+import { useState, useContext } from "react"
 import styled from "styled-components"
+import { globalContext } from "../../context/GlobalContext"
+
 const StyledHeader = styled.header`
     display: flex;
     justify-content: space-between;
@@ -71,8 +73,9 @@ input{
 
 `
 
-export default function Header(props){
-    const {handleSearch, handleMobileMenu}=props
+export default function Header(){
+    const context = useContext(globalContext);
+    const {handleSearch, handleMobileMenu}=context
 
     const [search,setSearch] = useState("");
 
